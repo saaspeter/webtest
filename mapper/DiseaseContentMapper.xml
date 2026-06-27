@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.DiseaseContentMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.DiseaseContent">
+    <!-- @mbg.generated -->
+    <id column="disease_id" jdbcType="BIGINT" property="diseaseId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="symptoms" jdbcType="VARCHAR" property="symptoms" />
+    <result column="need_extract" jdbcType="SMALLINT" property="needExtract" />
+    <result column="article_source" jdbcType="VARCHAR" property="articleSource" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!-- @mbg.generated -->
+    delete from kh_disease_content
+    where disease_id = #{diseaseId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.DiseaseContent">
+    <!-- @mbg.generated -->
+    insert into kh_disease_content (disease_id, name, language, 
+      symptoms, need_extract, article_source, 
+      create_time, update_time)
+    values (#{diseaseId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR}, 
+      #{symptoms,jdbcType=VARCHAR}, #{needExtract,jdbcType=SMALLINT}, #{articleSource,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.DiseaseContent">
+    <!-- @mbg.generated -->
+    update kh_disease_content
+    set name = #{name,jdbcType=VARCHAR},
+      language = #{language,jdbcType=VARCHAR},
+      symptoms = #{symptoms,jdbcType=VARCHAR},
+      need_extract = #{needExtract,jdbcType=SMALLINT},
+      article_source = #{articleSource,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where disease_id = #{diseaseId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select disease_id, name, language, symptoms, need_extract, article_source, create_time, 
+    update_time
+    from kh_disease_content
+    where disease_id = #{diseaseId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select disease_id, name, language, symptoms, need_extract, article_source, create_time, 
+    update_time
+    from kh_disease_content
+  </select>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.UserFavoritesMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.UserFavorites">
+    <!-- @mbg.generated -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="content_id" jdbcType="BIGINT" property="contentId" />
+    <result column="content_type" jdbcType="SMALLINT" property="contentType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.UserFavorites">
+    <!-- @mbg.generated -->
+    insert into kh_user_favorites (id, user_id, content_id, 
+      content_type, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{contentId,jdbcType=BIGINT}, 
+      #{contentType,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.UserFavorites">
+    <!-- @mbg.generated -->
+    update kh_user_favorites
+    set user_id = #{userId,jdbcType=BIGINT},
+      content_id = #{contentId,jdbcType=BIGINT},
+      content_type = #{contentType,jdbcType=SMALLINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select id, user_id, content_id, content_type, create_time, update_time
+    from kh_user_favorites
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select id, user_id, content_id, content_type, create_time, update_time
+    from kh_user_favorites
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from kh_user_favorites
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+    delete from kh_user_favorites
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+</mapper>

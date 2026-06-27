@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.DiseaseDrugMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.DiseaseDrug">
+    <!-- @mbg.generated -->
+    <id column="disease_id" jdbcType="BIGINT" property="diseaseId" />
+    <id column="drug_id" jdbcType="BIGINT" property="drugId" />
+    <result column="treate_desc" jdbcType="VARCHAR" property="treateDesc" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    <!-- @mbg.generated -->
+    delete from kh_disease_drug
+    where disease_id = #{diseaseId,jdbcType=BIGINT}
+      and drug_id = #{drugId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.DiseaseDrug">
+    <!-- @mbg.generated -->
+    insert into kh_disease_drug (disease_id, drug_id, treate_desc, 
+      create_time, update_time)
+    values (#{diseaseId,jdbcType=BIGINT}, #{drugId,jdbcType=BIGINT}, #{treateDesc,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.DiseaseDrug">
+    <!-- @mbg.generated -->
+    update kh_disease_drug
+    set treate_desc = #{treateDesc,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where disease_id = #{diseaseId,jdbcType=BIGINT}
+      and drug_id = #{drugId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select disease_id, drug_id, treate_desc, create_time, update_time
+    from kh_disease_drug
+    where disease_id = #{diseaseId,jdbcType=BIGINT}
+      and drug_id = #{drugId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select disease_id, drug_id, treate_desc, create_time, update_time
+    from kh_disease_drug
+  </select>
+</mapper>

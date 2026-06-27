@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.ResourceForumCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.ResourceForumCategory">
+    <result column="resource_type" jdbcType="SMALLINT" property="resourceType" />
+    <result column="resource_id" jdbcType="BIGINT" property="resourceId" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="sync_status" jdbcType="SMALLINT" property="syncStatus" />
+    <result column="sync_message" jdbcType="VARCHAR" property="syncMessage" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <delete id="deleteByPK">
+    delete from kh_resource_forum_category
+    where resource_type = #{resourceType,jdbcType=SMALLINT}
+    and resource_id = #{resourceId,jdbcType=BIGINT}
+    and language = #{language,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.UserDisease">
+    insert into kh_resource_forum_category (resource_type, resource_id,
+                language, category_id, category_name, sync_status, sync_message)
+    values (#{resourceType,jdbcType=SMALLINT}, #{resourceId,jdbcType=BIGINT},
+            #{language,jdbcType=VARCHAR}, #{categoryId,jdbcType=BIGINT},
+            #{categoryName,jdbcType=VARCHAR}, #{syncStatus,jdbcType=SMALLINT},
+            #{syncMessage,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="selectByPK" resultMap="BaseResultMap">
+    select resource_type, resource_id, language, category_id, category_name,
+        sync_status, sync_message, create_time
+    from kh_resource_forum_category
+    where resource_type = #{resourceType,jdbcType=SMALLINT}
+    and resource_id = #{resourceId,jdbcType=BIGINT}
+    and language = #{language,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

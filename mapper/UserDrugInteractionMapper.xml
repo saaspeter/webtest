@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.UserDrugInteractionMapper">
+    <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.UserDrugInteraction">
+        <id column="user_id" jdbcType="BIGINT" property="userId" />
+        <id column="user_drug_id1" jdbcType="BIGINT" property="userDrugId1" />
+        <id column="user_drug_id2" jdbcType="BIGINT" property="userDrugId2" />
+        <id column="drug_id1" jdbcType="BIGINT" property="drugId1" />
+        <id column="drug_id2" jdbcType="BIGINT" property="drugId2" />
+        <result column="drug_name1" jdbcType="VARCHAR" property="drugName1" />
+        <result column="drug_name2" jdbcType="VARCHAR" property="drugName2" />
+        <result column="severity_level" jdbcType="SMALLINT" property="severityLevel" />
+        <result column="show_status" jdbcType="SMALLINT" property="showStatus" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+    <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.UserDrugInteraction">
+        insert into kh_user_drug_interaction (user_id, user_drug_id1, user_drug_id2, drug_id1, drug_id2,
+                                                drug_name1, drug_name2, severity_level, show_status)
+        values (#{userId,jdbcType=BIGINT}, #{userDrugId1,jdbcType=BIGINT}, #{userDrugId2,jdbcType=BIGINT},
+                #{drugId1,jdbcType=BIGINT}, #{drugId2,jdbcType=BIGINT},
+                #{drugName1,jdbcType=VARCHAR}, #{drugName2,jdbcType=VARCHAR},
+                #{severityLevel,jdbcType=SMALLINT}, #{showStatus,jdbcType=SMALLINT})
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into kh_user_drug_interaction (user_id, user_drug_id1, user_drug_id2,
+                    drug_id1, drug_id2, drug_name1, drug_name2, severity_level, show_status)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId,jdbcType=BIGINT}, #{item.userDrugId1,jdbcType=BIGINT},
+            #{item.userDrugId2,jdbcType=BIGINT}, #{item.drugId1,jdbcType=BIGINT},
+            #{item.drugId2,jdbcType=BIGINT}, #{item.drugName1,jdbcType=VARCHAR},
+            #{item.drugName2,jdbcType=VARCHAR}, #{item.severityLevel,jdbcType=SMALLINT},
+            #{item.showStatus,jdbcType=SMALLINT})
+        </foreach>
+    </insert>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select  user_id, user_drug_id1, user_drug_id2, drug_id1, drug_id2,
+                    drug_name1, drug_name2, severity_level, show_status, update_time
+        from kh_user_drug_interaction
+        where user_id = #{userId,jdbcType=BIGINT}
+            and user_drug_id1 = #{userDrugId1,jdbcType=BIGINT}
+            and user_drug_id2 = #{userDrugId2,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select  user_id, user_drug_id1, user_drug_id2, drug_id1, drug_id2,
+                drug_name1, drug_name2, severity_level, show_status, update_time
+        from kh_user_drug_interaction
+        where user_id = #{userId,jdbcType=BIGINT}
+                and show_status = 1
+    </select>
+
+    <update id="updateShowStatus">
+        update kh_user_drug_interaction
+        set show_status = #{showStatus,jdbcType=SMALLINT},
+        update_time = now()
+        where user_id = #{userId,jdbcType=BIGINT}
+                and (user_drug_id1 = #{userDrugId,jdbcType=BIGINT}
+                        or user_drug_id2 = #{userDrugId,jdbcType=BIGINT})
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from kh_user_drug_interaction
+        where user_id = #{userId,jdbcType=BIGINT}
+            and user_drug_id1 = #{userDrugId1,jdbcType=BIGINT}
+            and user_drug_id2 = #{userDrugId2,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByUserDrugId" parameterType="java.lang.Long">
+        delete from kh_user_drug_interaction
+        where user_id = #{userId,jdbcType=BIGINT}
+        and (user_drug_id1 = #{userDrugId,jdbcType=BIGINT}
+          or user_drug_id2 = #{userDrugId,jdbcType=BIGINT})
+    </delete>
+
+    <delete id="deleteByUserId" parameterType="java.lang.Long">
+        delete from kh_user_drug_interaction
+        where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+
+</mapper>

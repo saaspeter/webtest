@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.DiseaseArticleMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.DiseaseArticle">
+    <!-- @mbg.generated -->
+    <id column="article_id" jdbcType="BIGINT" property="articleId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="disease_id" jdbcType="BIGINT" property="diseaseId" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="is_primary" jdbcType="SMALLINT" property="isPrimary" />
+    <result column="article_tag" jdbcType="INTEGER" property="articleTag" />
+    <result column="source_url" jdbcType="VARCHAR" property="sourceUrl" />
+    <result column="site_url" jdbcType="VARCHAR" property="siteUrl" />
+    <result column="source_sitetag" jdbcType="VARCHAR" property="sourceSitetag" />
+    <result column="spider_job_id" jdbcType="BIGINT" property="spiderJobId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="check_status" jdbcType="SMALLINT" property="checkStatus" />
+    <result column="check_time" jdbcType="TIMESTAMP" property="checkTime" />
+    <result column="show_type" jdbcType="SMALLINT" property="showType" />
+    <result column="source_name" jdbcType="VARCHAR" property="sourceName" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from kh_disease_article
+    where article_id = #{articleId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.DiseaseArticle">
+    insert into kh_disease_article (article_id, name, disease_id, 
+      language, is_primary, article_tag, 
+      source_url, site_url, source_sitetag, 
+      spider_job_id, create_time, update_time, 
+      check_status, check_time, show_type, source_name)
+    values (#{articleId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{diseaseId,jdbcType=BIGINT}, 
+      #{language,jdbcType=VARCHAR}, #{isPrimary,jdbcType=SMALLINT}, #{articleTag,jdbcType=INTEGER}, 
+      #{sourceUrl,jdbcType=VARCHAR}, #{siteUrl,jdbcType=VARCHAR}, #{sourceSitetag,jdbcType=VARCHAR}, 
+      #{spiderJobId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{checkStatus,jdbcType=SMALLINT}, #{checkTime,jdbcType=TIMESTAMP}, #{showType,jdbcType=SMALLINT},
+      #{sourceName,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.DiseaseArticle">
+    update kh_disease_article
+    set name = #{name,jdbcType=VARCHAR},
+      disease_id = #{diseaseId,jdbcType=BIGINT},
+      language = #{language,jdbcType=VARCHAR},
+      is_primary = #{isPrimary,jdbcType=SMALLINT},
+      article_tag = #{articleTag,jdbcType=INTEGER},
+      source_url = #{sourceUrl,jdbcType=VARCHAR},
+      site_url = #{siteUrl,jdbcType=VARCHAR},
+      source_sitetag = #{sourceSitetag,jdbcType=VARCHAR},
+      spider_job_id = #{spiderJobId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      check_status = #{checkStatus,jdbcType=SMALLINT},
+      check_time = #{checkTime,jdbcType=TIMESTAMP},
+      show_type = #{showType,jdbcType=SMALLINT},
+      source_name = #{sourceName,jdbcType=VARCHAR}
+    where article_id = #{articleId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select article_id, name, disease_id, language, is_primary, article_tag, source_url, 
+    site_url, source_sitetag, spider_job_id, create_time, update_time, check_status, 
+    check_time, show_type, source_name
+    from kh_disease_article
+    where article_id = #{articleId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectRecentArticles" resultMap="BaseResultMap">
+    select article_id, name, disease_id, language, is_primary, article_tag, source_url,
+      site_url, source_sitetag, spider_job_id, create_time, update_time, check_status,
+      check_time, show_type, source_name
+    from kh_disease_article
+    where disease_id in
+    <foreach item="item" collection="diseaseIds" separator="," open="(" close=")" index="">
+      #{item}
+    </foreach>
+    <if test="showType != null">
+      and show_type = #{showType,jdbcType=SMALLINT}
+    </if>
+    order by update_time desc
+    limit #{limitNum,jdbcType=INTEGER}
+    <if test="offset != null">
+      offset #{offset,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="selectPrimaryOne" resultMap="BaseResultMap">
+    select article_id, name, disease_id, language, is_primary, article_tag, source_url,
+      site_url, source_sitetag, create_time, update_time, check_status,
+      check_time, show_type, source_name
+    from kh_disease_article
+    where disease_id = #{diseaseId,jdbcType=BIGINT}
+    and is_primary = 1  limit 1
+  </select>
+</mapper>

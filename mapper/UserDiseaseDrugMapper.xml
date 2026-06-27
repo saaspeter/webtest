@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.UserDiseaseDrugMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.UserDiseaseDrug">
+    <!-- @mbg.generated -->
+    <result column="user_drug_id" jdbcType="BIGINT" property="userDrugId" />
+    <result column="user_disease_id" jdbcType="BIGINT" property="userDiseaseId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="disease_name" jdbcType="VARCHAR" property="diseaseName" />
+    <result column="drug_name" jdbcType="VARCHAR" property="drugName" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.UserDiseaseDrug">
+    <!-- @mbg.generated -->
+    insert into kh_user_disease_drug (user_drug_id, user_disease_id)
+    values (#{userDrugId,jdbcType=BIGINT}, #{userDiseaseId,jdbcType=BIGINT})
+  </insert>
+
+  <insert id="insertBatch" >
+    insert into kh_user_disease_drug (user_drug_id, user_disease_id)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.userDrugId,jdbcType=BIGINT}, #{item.userDiseaseId,jdbcType=BIGINT})
+    </foreach>
+  </insert>
+
+  <select id="isExistsByComPK" resultType="java.lang.Integer">
+    select count(1) from kh_user_disease_drug
+    where user_drug_id = #{userDrugId,jdbcType=BIGINT}
+    and user_disease_id = #{userDiseaseId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUserDrugId" resultMap="BaseResultMap">
+    select a.user_drug_id, a.user_disease_id, a.create_time, a.update_time, b.disease_name
+    from kh_user_disease_drug a, kh_user_disease b
+    where a.user_disease_id=b.id
+      and a.user_drug_id = #{userDrugId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUserDiseaseId" resultMap="BaseResultMap">
+        select a.user_drug_id, a.user_disease_id, a.create_time, a.update_time, b.drug_name
+        from kh_user_disease_drug a, kh_user_drug b
+        where a.user_drug_id=b.id
+        and a.user_disease_id = #{userDiseaseId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByUserDrugId" parameterType="java.lang.Long">
+    delete from kh_user_disease_drug
+    where user_drug_id = #{userDrugId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByUserDiseaseId" parameterType="java.lang.Long">
+    delete from kh_user_disease_drug
+    where user_disease_id = #{userDiseaseId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+    delete from kh_user_disease_drug
+    where user_drug_id in
+      (select id from kh_user_drug where user_id = #{userId,jdbcType=BIGINT})
+  </delete>
+</mapper>

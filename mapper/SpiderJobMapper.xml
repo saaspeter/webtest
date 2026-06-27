@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.SpiderJobMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.SpiderJob">
+    <!-- @mbg.generated -->
+    <id column="job_id" jdbcType="BIGINT" property="jobId" />
+    <result column="resource_type" jdbcType="SMALLINT" property="resourceType" />
+    <result column="site_url" jdbcType="VARCHAR" property="siteUrl" />
+    <result column="source_sitetag" jdbcType="VARCHAR" property="sourceSitetag" />
+    <result column="status_list" jdbcType="SMALLINT" property="statusList" />
+    <result column="status_detail" jdbcType="SMALLINT" property="statusDetail" />
+    <result column="start_time_list" jdbcType="TIMESTAMP" property="startTimeList" />
+    <result column="end_time_list" jdbcType="TIMESTAMP" property="endTimeList" />
+    <result column="start_time_detail" jdbcType="TIMESTAMP" property="startTimeDetail" />
+    <result column="end_time_detail" jdbcType="TIMESTAMP" property="endTimeDetail" />
+    <result column="total_number_list" jdbcType="BIGINT" property="totalNumberList" />
+    <result column="total_detail_finished" jdbcType="BIGINT" property="totalDetailFinished" />
+    <result column="last_detail_id" jdbcType="BIGINT" property="lastDetailId" />
+    <result column="spider_detail_times" jdbcType="INTEGER" property="spiderDetailTimes" />
+    <result column="failed_number" jdbcType="INTEGER" property="failedNumber" />
+    <result column="job_console_log" jdbcType="VARCHAR" property="jobConsoleLog" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!-- @mbg.generated -->
+    delete from kh_spider_job
+    where job_id = #{jobId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.SpiderJob">
+    <!-- @mbg.generated -->
+    insert into kh_spider_job (job_id, resource_type, site_url, 
+      source_sitetag, status_list, status_detail, 
+      start_time_list, end_time_list, start_time_detail, 
+      end_time_detail, total_number_list, total_detail_finished, 
+      last_detail_id, spider_detail_times, failed_number, 
+      job_console_log)
+    values (#{jobId,jdbcType=BIGINT}, #{resourceType,jdbcType=SMALLINT}, #{siteUrl,jdbcType=VARCHAR}, 
+      #{sourceSitetag,jdbcType=VARCHAR}, #{statusList,jdbcType=SMALLINT}, #{statusDetail,jdbcType=SMALLINT}, 
+      #{startTimeList,jdbcType=TIMESTAMP}, #{endTimeList,jdbcType=TIMESTAMP}, #{startTimeDetail,jdbcType=TIMESTAMP}, 
+      #{endTimeDetail,jdbcType=TIMESTAMP}, #{totalNumberList,jdbcType=BIGINT}, #{totalDetailFinished,jdbcType=BIGINT}, 
+      #{lastDetailId,jdbcType=BIGINT}, #{spiderDetailTimes,jdbcType=INTEGER}, #{failedNumber,jdbcType=INTEGER}, 
+      #{jobConsoleLog,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.SpiderJob">
+    <!-- @mbg.generated -->
+    update kh_spider_job
+    set resource_type = #{resourceType,jdbcType=SMALLINT},
+      site_url = #{siteUrl,jdbcType=VARCHAR},
+      source_sitetag = #{sourceSitetag,jdbcType=VARCHAR},
+      status_list = #{statusList,jdbcType=SMALLINT},
+      status_detail = #{statusDetail,jdbcType=SMALLINT},
+      start_time_list = #{startTimeList,jdbcType=TIMESTAMP},
+      end_time_list = #{endTimeList,jdbcType=TIMESTAMP},
+      start_time_detail = #{startTimeDetail,jdbcType=TIMESTAMP},
+      end_time_detail = #{endTimeDetail,jdbcType=TIMESTAMP},
+      total_number_list = #{totalNumberList,jdbcType=BIGINT},
+      total_detail_finished = #{totalDetailFinished,jdbcType=BIGINT},
+      last_detail_id = #{lastDetailId,jdbcType=BIGINT},
+      spider_detail_times = #{spiderDetailTimes,jdbcType=INTEGER},
+      failed_number = #{failedNumber,jdbcType=INTEGER},
+      job_console_log = #{jobConsoleLog,jdbcType=VARCHAR}
+    where job_id = #{jobId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select job_id, resource_type, site_url, source_sitetag, status_list, status_detail, 
+    start_time_list, end_time_list, start_time_detail, end_time_detail, total_number_list, 
+    total_detail_finished, last_detail_id, spider_detail_times, failed_number, job_console_log
+    from kh_spider_job
+    where job_id = #{jobId,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select job_id, resource_type, site_url, source_sitetag, status_list, status_detail, 
+    start_time_list, end_time_list, start_time_detail, end_time_detail, total_number_list, 
+    total_detail_finished, last_detail_id, spider_detail_times, failed_number, job_console_log
+    from kh_spider_job
+  </select>
+</mapper>

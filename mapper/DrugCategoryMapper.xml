@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.DrugCategoryMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.DrugCategory">
+    <!-- @mbg.generated -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="name_english" jdbcType="VARCHAR" property="nameEnglish" />
+    <result column="is_leaf_node" jdbcType="BIT" property="isLeafNode" />
+    <result column="parent_path" jdbcType="VARCHAR" property="parentPath" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!-- @mbg.generated -->
+    delete from kh_drug_category
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.DrugCategory">
+    <!-- @mbg.generated -->
+    insert into kh_drug_category (id, name, name_english, 
+      is_leaf_node, parent_path, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{nameEnglish,jdbcType=VARCHAR}, 
+      #{isLeafNode,jdbcType=BIT}, #{parentPath,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.DrugCategory">
+    <!-- @mbg.generated -->
+    update kh_drug_category
+    set name = #{name,jdbcType=VARCHAR},
+      name_english = #{nameEnglish,jdbcType=VARCHAR},
+      is_leaf_node = #{isLeafNode,jdbcType=BIT},
+      parent_path = #{parentPath,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select id, name, name_english, is_leaf_node, parent_path, create_time, update_time
+    from kh_drug_category
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select id, name, name_english, is_leaf_node, parent_path, create_time, update_time
+    from kh_drug_category
+  </select>
+</mapper>

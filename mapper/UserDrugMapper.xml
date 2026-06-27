@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.UserDrugMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.UserDrug">
+    <!-- @mbg.generated -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="drug_id" jdbcType="BIGINT" property="drugId" />
+    <result column="drug_name" jdbcType="VARCHAR" property="drugName" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="drug_form" jdbcType="SMALLINT" property="drugForm" />
+    <result column="drug_unit_type" jdbcType="SMALLINT" property="drugUnitType" />
+    <result column="drug_unit_value" jdbcType="INTEGER" property="drugUnitValue" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="reminder_start_date" jdbcType="TIMESTAMP" property="reminderStartDate" />
+    <result column="frequency_type" jdbcType="SMALLINT" property="frequencyType" />
+    <result column="days_interval" jdbcType="INTEGER" property="daysInterval" />
+    <result column="days_inweek" jdbcType="VARCHAR" property="daysInWeek" />
+    <result column="times_aday" jdbcType="INTEGER" property="timesAday" />
+    <result column="quantity" jdbcType="NUMERIC" property="quantity" />
+    <result column="notes" jdbcType="VARCHAR" property="notes" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.UserDrug"
+          keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into kh_user_drug (user_id, drug_id,
+      drug_name, status, drug_form, 
+      drug_unit_type, drug_unit_value, start_date, 
+      end_date, reminder_start_date, frequency_type, days_interval, days_inweek,
+      times_aday, notes, quantity)
+    values ( #{userId,jdbcType=BIGINT}, #{drugId,jdbcType=BIGINT},
+      #{drugName,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{drugForm,jdbcType=SMALLINT}, 
+      #{drugUnitType,jdbcType=SMALLINT}, #{drugUnitValue,jdbcType=INTEGER}, #{startDate,jdbcType=TIMESTAMP}, 
+      #{endDate,jdbcType=TIMESTAMP}, #{reminderStartDate,jdbcType=TIMESTAMP},
+      #{frequencyType,jdbcType=SMALLINT}, #{daysInterval,jdbcType=INTEGER}, #{daysInWeek,jdbcType=VARCHAR},
+      #{timesAday,jdbcType=INTEGER}, #{notes,jdbcType=VARCHAR}, #{quantity,jdbcType=NUMERIC} )
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.UserDrug">
+    update kh_user_drug
+    set
+      <if test="drugId != null">
+        <choose>
+          <when test="drugId == -1">
+            drug_id = null,
+          </when>
+          <otherwise>
+            drug_id = #{drugId,jdbcType=BIGINT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="drugName != null">
+        drug_name = #{drugName,jdbcType=VARCHAR},
+      </if>
+      <if test="drugForm != null">
+        drug_form = #{drugForm,jdbcType=SMALLINT},
+      </if>
+      <if test="drugUnitType != null">
+        drug_unit_type = #{drugUnitType,jdbcType=SMALLINT},
+      </if>
+      <if test="drugUnitValue != null">
+        drug_unit_value = #{drugUnitValue,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reminderStartDate != null">
+        reminder_start_date = #{reminderStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="frequencyType != null">
+        frequency_type = #{frequencyType,jdbcType=SMALLINT},
+      </if>
+      <if test="daysInterval != null">
+        days_interval = #{daysInterval,jdbcType=INTEGER},
+      </if>
+      <if test="daysInWeek != null">
+        days_inweek = #{daysInWeek,jdbcType=VARCHAR},
+      </if>
+      <if test="timesAday != null">
+        times_aday = #{timesAday,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="notes != null">
+        notes = #{notes,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=NUMERIC},
+      </if>
+      update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateStatus">
+    update kh_user_drug
+    set status = #{status,jdbcType=SMALLINT},
+    <if test="reminderStartDate != null">
+      reminder_start_date = #{reminderStartDate,jdbcType=TIMESTAMP},
+    </if>
+    update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, user_id, drug_id, drug_name, status, drug_form, drug_unit_type, drug_unit_value, 
+    start_date, end_date, reminder_start_date, frequency_type, days_interval, days_inweek,
+    times_aday, quantity, notes, create_time, update_time
+    from kh_user_drug
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select id, user_id, drug_id, drug_name, status, drug_form, drug_unit_type, drug_unit_value,
+    start_date, end_date, reminder_start_date, frequency_type, days_interval, days_inweek,
+    times_aday, quantity, notes, create_time, update_time
+    from kh_user_drug
+    where user_id = #{userId,jdbcType=BIGINT} and status != 3
+    order by create_time desc
+  </select>
+
+  <select id="selectDrugExists" resultMap="BaseResultMap">
+    select id, user_id, drug_id, drug_name, status, drug_form, drug_unit_type, drug_unit_value,
+    start_date, end_date, reminder_start_date, frequency_type, days_interval, days_inweek,
+    times_aday, quantity, notes, create_time, update_time
+    from kh_user_drug
+    where user_id = #{userId,jdbcType=BIGINT}
+    and ( LOWER(drug_name) = LOWER(#{drugName,jdbcType=VARCHAR})
+    <if test="drugId != null">
+      or drug_id = #{drugId,jdbcType=BIGINT}
+    </if> )
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from kh_user_drug
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+    delete from kh_user_drug
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+</mapper>

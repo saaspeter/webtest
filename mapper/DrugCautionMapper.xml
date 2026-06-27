@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.DrugCautionMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.DrugCaution">
+    <id column="drug_id" jdbcType="BIGINT" property="drugId" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="caution_type" jdbcType="SMALLINT" property="cautionType" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.DrugCaution">
+    insert into kh_drug_caution (drug_id, language, caution_type, content)
+    values (#{drugId,jdbcType=BIGINT}, #{language,jdbcType=VARCHAR},
+            #{cautionType,jdbcType=SMALLINT}, #{content,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select drug_id, language, caution_type, content, update_time
+    from kh_drug_caution
+    where drug_id = #{drugId,jdbcType=BIGINT} and language = #{language,jdbcType=VARCHAR}
+      and caution_type = #{cautionType,jdbcType=SMALLINT}
+  </select>
+
+  <select id="selectByDrugId" resultMap="BaseResultMap">
+      select drug_id, language, caution_type, content, update_time
+      from kh_drug_caution
+      where drug_id = #{drugId,jdbcType=BIGINT} and language = #{language,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectBasicByDrugId" resultMap="BaseResultMap">
+    select drug_id, language, caution_type, update_time
+    from kh_drug_caution
+    where drug_id = #{drugId,jdbcType=BIGINT} and language = #{language,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

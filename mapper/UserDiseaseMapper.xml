@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.UserDiseaseMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.UserDisease">
+    <!-- @mbg.generated -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="disease_id" jdbcType="BIGINT" property="diseaseId" />
+    <result column="disease_name" jdbcType="VARCHAR" property="diseaseName" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="notes" jdbcType="VARCHAR" property="notes" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from kh_user_disease
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.UserDisease"
+    keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into kh_user_disease (user_id, disease_id,
+      disease_name, status, start_date, end_date, notes)
+    values (#{userId,jdbcType=BIGINT}, #{diseaseId,jdbcType=BIGINT},
+      #{diseaseName,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{startDate,jdbcType=TIMESTAMP},
+      #{endDate,jdbcType=TIMESTAMP}, #{notes,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.UserDisease">
+    update kh_user_disease
+    set
+    <if test="diseaseId != null">
+      <choose>
+        <when test="diseaseId == -1">
+          disease_id = null,
+        </when>
+        <otherwise>
+          disease_id = #{diseaseId,jdbcType=BIGINT},
+        </otherwise>
+      </choose>
+    </if>
+    <if test="diseaseName != null">
+      disease_name = #{diseaseName,jdbcType=VARCHAR},
+    </if>
+    <if test="status != null">
+      status = #{status,jdbcType=SMALLINT},
+    </if>
+    <if test="startDate != null">
+      start_date = #{startDate,jdbcType=TIMESTAMP},
+    </if>
+    <if test="endDate != null">
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+    </if>
+    <if test="notes != null">
+        notes = #{notes,jdbcType=VARCHAR},
+    </if>
+      update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByPK" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, user_id, disease_id, disease_name, status, start_date, end_date, notes,
+           create_time, update_time
+    from kh_user_disease
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    select id, user_id, disease_id, disease_name, status, start_date, end_date, notes,
+           create_time, update_time
+    from kh_user_disease
+    where user_id = #{userId,jdbcType=BIGINT} order by create_time desc
+  </select>
+
+  <select id="isDiseaseExists" resultType="java.lang.Integer">
+    <!-- @mbg.generated -->
+    select count(1) from kh_user_disease
+    where user_id = #{userId,jdbcType=BIGINT}
+      and ( LOWER(disease_name) = LOWER(#{diseaseName,jdbcType=VARCHAR})
+      <if test="diseaseId != null">
+                or disease_id = #{diseaseId,jdbcType=BIGINT}
+      </if> )
+  </select>
+
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+    delete from kh_user_disease
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+</mapper>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.UserEmailTokenMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.UserEmailToken">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="token_type" jdbcType="SMALLINT" property="tokenType" />
+    <result column="token" jdbcType="VARCHAR" property="token" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="due_time" jdbcType="TIMESTAMP" property="dueTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.UserEmailToken"
+          keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into kh_user_email_token (user_id, email, token_type,
+      token, status, due_time)
+    values ( #{userId,jdbcType=BIGINT}, #{email,jdbcType=VARCHAR},
+      #{tokenType,jdbcType=SMALLINT}, #{token,jdbcType=VARCHAR},
+      #{status,jdbcType=SMALLINT}, #{dueTime,jdbcType=TIMESTAMP} )
+  </insert>
+
+  <update id="updateDueTime">
+    update kh_user_email_token
+    set due_time = #{dueTime,jdbcType=TIMESTAMP}, update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateStatus">
+    update kh_user_email_token
+    set status = #{status,jdbcType=SMALLINT}, update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByToken" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, user_id, email, token_type, token, status, due_time, create_time, update_time
+    from kh_user_email_token
+    where token = #{token,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectLastByEmailType" resultMap="BaseResultMap">
+    select id, user_id, email, token_type, token, status, due_time, create_time, update_time
+    from kh_user_email_token
+    where email = #{email,jdbcType=VARCHAR}
+    and token_type = #{tokenType,jdbcType=SMALLINT}
+    order by create_time desc limit 1
+  </select>
+
+  <delete id="deleteByPK" parameterType="java.lang.Long">
+    delete from kh_user_email_token
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByUserType">
+    delete from kh_user_email_token
+    where user_id = #{userId,jdbcType=BIGINT} and token_type = #{tokenType,jdbcType=SMALLINT}
+  </delete>
+
+  <delete id="deleteByUser">
+    delete from kh_user_email_token
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.DrugDoseMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.DrugDose">
+    <!-- @mbg.generated -->
+    <id column="drug_id" jdbcType="BIGINT" property="drugId" />
+    <result column="form" jdbcType="SMALLINT" property="form" />
+    <result column="unit_type" jdbcType="SMALLINT" property="unitType" />
+    <result column="unit_value" jdbcType="INTEGER" property="unitValue" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!-- @mbg.generated -->
+    delete from kh_drug_dose
+    where drug_id = #{drugId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.DrugDose">
+    <!-- @mbg.generated -->
+    insert into kh_drug_dose (drug_id, form, unit_type, 
+      unit_value)
+    values (#{drugId,jdbcType=BIGINT}, #{form,jdbcType=SMALLINT}, #{unitType,jdbcType=SMALLINT}, 
+      #{unitValue,jdbcType=INTEGER})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.DrugDose">
+    <!-- @mbg.generated -->
+    update kh_drug_dose
+    set form = #{form,jdbcType=SMALLINT},
+      unit_type = #{unitType,jdbcType=SMALLINT},
+      unit_value = #{unitValue,jdbcType=INTEGER}
+    where drug_id = #{drugId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select drug_id, form, unit_type, unit_value
+    from kh_drug_dose
+    where drug_id = #{drugId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    <!-- @mbg.generated -->
+    select drug_id, form, unit_type, unit_value
+    from kh_drug_dose
+  </select>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.DrugMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.Drug">
+    <!-- @mbg.generated -->
+    <id column="drug_id" jdbcType="BIGINT" property="drugId" />
+    <result column="name_english" jdbcType="VARCHAR" property="nameEnglish" />
+    <result column="name_chinese" jdbcType="VARCHAR" property="nameChinese" />
+    <result column="name_general_temp" jdbcType="VARCHAR" property="nameGeneralTemp" />
+    <result column="name_brand_temp" jdbcType="VARCHAR" property="nameBrandTemp" />
+    <result column="is_zhongyao" jdbcType="SMALLINT" property="isZhongyao" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="is_general" jdbcType="SMALLINT" property="isGeneral" />
+    <result column="general_drug_id" jdbcType="BIGINT" property="generalDrugId" />
+    <result column="source_url" jdbcType="VARCHAR" property="sourceUrl" />
+    <result column="spider_job_id" jdbcType="BIGINT" property="spiderJobId" />
+    <result column="check_status" jdbcType="SMALLINT" property="checkStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="id_action_webmd" jdbcType="VARCHAR" property="idActionWebmd" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.Drug">
+    insert into kh_drug (drug_id, name_english, name_chinese, 
+      name_general_temp, name_brand_temp, is_zhongyao, 
+      category_id, is_general, general_drug_id, 
+      source_url, spider_job_id, check_status, id_action_webmd)
+    values (#{drugId,jdbcType=BIGINT}, #{nameEnglish,jdbcType=VARCHAR}, #{nameChinese,jdbcType=VARCHAR}, 
+      #{nameGeneralTemp,jdbcType=VARCHAR}, #{nameBrandTemp,jdbcType=VARCHAR}, #{isZhongyao,jdbcType=SMALLINT}, 
+      #{categoryId,jdbcType=INTEGER}, #{isGeneral,jdbcType=SMALLINT}, #{generalDrugId,jdbcType=BIGINT}, 
+      #{sourceUrl,jdbcType=VARCHAR}, #{spiderJobId,jdbcType=BIGINT}, #{checkStatus,jdbcType=SMALLINT},
+      #{idActionWebmd,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.Drug">
+    <!-- @mbg.generated -->
+    update kh_drug
+    set name_english = #{nameEnglish,jdbcType=VARCHAR},
+      name_chinese = #{nameChinese,jdbcType=VARCHAR},
+      name_general_temp = #{nameGeneralTemp,jdbcType=VARCHAR},
+      name_brand_temp = #{nameBrandTemp,jdbcType=VARCHAR},
+      is_zhongyao = #{isZhongyao,jdbcType=SMALLINT},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      is_general = #{isGeneral,jdbcType=SMALLINT},
+      general_drug_id = #{generalDrugId,jdbcType=BIGINT},
+      source_url = #{sourceUrl,jdbcType=VARCHAR},
+      spider_job_id = #{spiderJobId,jdbcType=BIGINT},
+      check_status = #{checkStatus,jdbcType=SMALLINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      id_action_webmd = #{idActionWebmd,jdbcType=VARCHAR}
+    where drug_id = #{drugId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectFirstOne" resultMap="BaseResultMap">
+    select drug_id, name_english, name_chinese, name_general_temp, name_brand_temp, is_zhongyao,
+    category_id, is_general, general_drug_id, source_url, spider_job_id, check_status,
+    create_time, update_time, id_action_webmd
+    from kh_drug limit 1
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select drug_id, name_english, name_chinese, name_general_temp, name_brand_temp, is_zhongyao, 
+    category_id, is_general, general_drug_id, source_url, spider_job_id, check_status, 
+    create_time, update_time, id_action_webmd
+    from kh_drug
+    where drug_id = #{drugId,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByNamePrefix" resultMap="BaseResultMap">
+    select drug_id, name_english, name_chinese, name_general_temp, name_brand_temp, is_zhongyao, 
+    category_id, is_general, general_drug_id, source_url, check_status
+    from kh_drug
+    where
+      <if test="column == 'name_english'">
+        LOWER(name_english) like #{value}
+      </if>
+      <if test="column == 'name_chinese'">
+        LOWER(name_chinese) like #{value}
+      </if>
+      limit 20
+  </select>
+
+  <select id="selectByIdArray" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select drug_id, name_english, name_chinese, name_general_temp, name_brand_temp, is_zhongyao,
+    category_id, is_general, general_drug_id, source_url, spider_job_id, check_status,
+    create_time, update_time, id_action_webmd
+    from kh_drug
+    where drug_id in
+    <foreach item="item" collection="drugIds" separator="," open="(" close=")" index="">
+      #{item}
+    </foreach>
+  </select>
+
+</mapper>

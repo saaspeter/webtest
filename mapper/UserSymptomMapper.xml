@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.knowihealth.healthWeb.mapper.UserSymptomMapper">
+  <resultMap id="BaseResultMap" type="com.knowihealth.healthWeb.domain.UserSymptom">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="status" jdbcType="SMALLINT" property="status" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="symptom_id" jdbcType="BIGINT" property="symptomId" />
+    <result column="cause_resource_type" jdbcType="SMALLINT" property="causeResourceType" />
+    <result column="cause_resource_id" jdbcType="BIGINT" property="causeResourceId" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.knowihealth.healthWeb.domain.UserSymptom"
+          keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+    insert into kh_user_symptom (name, status, user_id, symptom_id, cause_resource_type,
+        cause_resource_id, start_date, end_date, description)
+    values ( #{name,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT},
+      #{userId,jdbcType=BIGINT}, #{symptomId,jdbcType=BIGINT},
+      #{causeResourceType,jdbcType=SMALLINT}, #{causeResourceId,jdbcType=BIGINT},
+      #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP},
+      #{description,jdbcType=VARCHAR} )
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.knowihealth.healthWeb.domain.UserSymptom">
+    update kh_user_symptom
+    set
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="symptomId != null">
+        <choose>
+          <when test="symptomId == -1">
+            symptom_id = null,
+          </when>
+          <otherwise>
+            symptom_id = #{symptomId,jdbcType=BIGINT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="causeResourceType!=null">
+        <choose>
+          <when test="causeResourceType == -1">
+            cause_resource_type = null,
+          </when>
+          <otherwise>
+            cause_resource_type = #{causeResourceType,jdbcType=SMALLINT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="causeResourceId!=null">
+        <choose>
+          <when test="causeResourceId == -1">
+            cause_resource_id = null,
+          </when>
+          <otherwise>
+            cause_resource_id = #{causeResourceId,jdbcType=BIGINT},
+          </otherwise>
+        </choose>
+      </if>
+      <if test="startDate != null">
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      update_time = now()
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, name, status, user_id, symptom_id, cause_resource_type, cause_resource_id,
+            start_date, end_date, description, create_time, update_time
+    from kh_user_symptom
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="countByNameValidForUser" resultType="java.lang.Integer">
+    select count(1) from kh_user_symptom
+    where user_id = #{userId,jdbcType=BIGINT}
+    and name = #{name,jdbcType=VARCHAR} and status = 1
+    <if test="id != null">
+      and id != #{id,jdbcType=BIGINT}
+    </if>
+  </select>
+
+  <select id="selectByUserIdShow" resultMap="BaseResultMap">
+    select id, name, status, user_id, symptom_id, cause_resource_type, cause_resource_id,
+            start_date, end_date, create_time, update_time
+    from kh_user_symptom
+    where user_id = #{userId,jdbcType=BIGINT}
+    and (status = 1 or status = 2)
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from kh_user_symptom
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByUserId" parameterType="java.lang.Long">
+    delete from kh_user_symptom
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+</mapper>
